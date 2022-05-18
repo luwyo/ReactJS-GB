@@ -1,53 +1,74 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { Button } from "@mui/material";
 import ReactDOM from "react-dom";
-import "./index.css";
 
-const food = [
-  { title: "Hamburger", price: "1000$" },
-  { title: "Sandwich", price: "2000$" },
-];
-const FoodList = () => {
-  return (
-    <div className="wrapper">
-      {food.map((food) => (
-        <div>
-          <div className="uppercase">title: {food.title}</div>
-          <div className="uppercase">price: {food.price}</div>
-        </div>
-      ))}
-    </div>
-  );
-};
+import "./global.css";
 
-const MessageComponent = (props) => {
-  console.log("props:", props);
+const MessageList = () => {
+  const [value, setValue] = useState("");
+  const [messages, setMessages] = useState([
+    {
+      author: "Bot",
+      message: "message 1",
+      date: new Date().toLocaleDateString(),
+    },
+  ]);
+
+  const sendMessage = () => {
+    if (value) {
+      setMessages([...messages, { author: "User", message: value }]);
+      setValue("");
+    }
+  };
+
+  useEffect(() => {
+    const lastMessages = messages[messages.length - 1];
+    let timerId = null;
+
+    if (messages.length && lastMessages.author === "User") {
+      timerId = setTimeout(() => {
+        setMessages([
+          ...messages,
+          { author: "Bot", message: "hello from bot" },
+        ]);
+      }, 500);
+    }
+
+    return () => {
+      clearInterval(timerId);
+    };
+  }, [messages]);
+
   return (
     <div>
-      <h1>{props.title}</h1>
-      <FoodList title="food from god" />
+      <h2>
+        <input
+          placeholder="Введите сообщение ..."
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+        />
+        <Button onClick={sendMessage}>send message</Button>
+        <hr />
+        {messages.map((message) => (
+          <div>
+            <h2>{message.author}</h2>
+            <p>{message.message}</p>
+            <hr />
+          </div>
+        ))}
+      </h2>
     </div>
   );
 };
-
-class ClassComponent extends React.Component {
-  render() {
-    return (
-      <div>
-        <h1>Hello, Food</h1>
-        <FoodList title="food for me" />
-      </div>
-    );
-  }
-}
 
 const App = () => {
   return (
-    <div>
-      <MessageComponent title="TestWord" />
-      <ClassComponent />
-    </div>
+    <>
+      <MessageList />
+    </>
   );
 };
+
 ReactDOM.render(
   <React.StrictMode>
     <App />
