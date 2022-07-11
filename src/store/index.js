@@ -12,14 +12,12 @@ import { profileReducer } from "./profile";
 import { conversationsReducer } from "./conversations";
 import { messagesReducer } from "./messages";
 import { gistsReducer } from "./gists";
-
 import {
   logger,
   botMessage,
   timeScheduler,
   crashReporter,
 } from "./middlewares";
-
 const apis = {
   getPublicGistsApi,
   searchGistsByNameApi,
@@ -28,21 +26,18 @@ const apis = {
   createMessageApi,
   createConversationApi,
 };
-
 const persistConfig = {
   key: "root",
   storage,
   blacklist: ["messages"],
   whitelist: ["profile"],
 };
-
-const reducer = combineReducers({
+export const reducer = combineReducers({
   profile: profileReducer,
   conversations: conversationsReducer,
   messages: messagesReducer,
   gists: gistsReducer,
 });
-
 export const store = createStore(
   persistReducer(persistConfig, reducer),
   compose(
@@ -58,5 +53,4 @@ export const store = createStore(
       : (args) => args
   )
 );
-
 export const persistor = persistStore(store);
