@@ -9,7 +9,6 @@ import {
   CREATE_MESSAGES_ERROR,
 } from "./types";
 import { DELETE_CONVERSATION } from "../types";
-
 const initialState = {
   messages: {},
   pending: false,
@@ -18,7 +17,6 @@ const initialState = {
   pendingSendMessage: false,
   errorSendMessage: null,
 };
-
 export const messagesReducer = (state = initialState, action) => {
   switch (action.type) {
     case DELETE_MESSAGE:
@@ -31,7 +29,6 @@ export const messagesReducer = (state = initialState, action) => {
           ),
         },
       };
-
     case DELETE_CONVERSATION:
       return {
         ...state,
@@ -48,14 +45,12 @@ export const messagesReducer = (state = initialState, action) => {
           {}
         ),
       };
-
     case GET_MESSAGES_START:
       return { ...state, pending: true, error: null };
     case GET_MESSAGES_SUCCESS:
       return { ...state, pending: false, messages: action.payload };
     case GET_MESSAGES_ERROR:
       return { ...state, pending: false, error: action.payload };
-
     case CREATE_MESSAGES_START:
       return { ...state, pendingSendMessage: true, errorSendMessage: null };
     case SEND_MESSAGE:
@@ -71,7 +66,6 @@ export const messagesReducer = (state = initialState, action) => {
           ],
         },
       };
-
     case CREATE_MESSAGES_ERROR:
       return {
         ...state,
